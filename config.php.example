@@ -1,0 +1,23 @@
+<?php
+// --- Configuration Setup ---
+define('DB_HOST', '127.0.0.1');
+define('DB_USER', 'sa');
+define('DB_PASS', 'sa');
+define('DB_NAME', 'hos');
+
+// --- MOPH Notify API Key ---
+define('MOPH_URL', 'https://morpromt2f.moph.go.th/api/notify/send');
+define('MOPH_CLIENT_KEY', '239fdf62b6f9xxxxxxx);
+define('MOPH_SECRET_KEY', '2RFPSNYxxxxxxxxx');
+
+// --- Timezone Setup ---
+date_default_timezone_set('Asia/Bangkok');
+
+// --- 1. เชื่อมต่อฐานข้อมูล (ใช้ค่าจาก config.php) ---
+try {
+    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8", DB_USER, DB_PASS);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Database Connection failed: " . $e->getMessage());
+}
+?>

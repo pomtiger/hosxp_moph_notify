@@ -1,5 +1,7 @@
 # ข้อมูลการเชื่อมต่อฐานข้อมูลและ Token ต่างๆ
 .env
+config.php
+db.php
 config/db.php
 config/web.php (ถ้ามีรหัสผ่าน)
 
