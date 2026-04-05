@@ -1,0 +1,10 @@
+# ข้อมูลการเชื่อมต่อฐานข้อมูลและ Token ต่างๆ
+.env
+config/db.php
+config/web.php (ถ้ามีรหัสผ่าน)
+
+# ไฟล์ชั่วคราวและไฟล์ Log
+/runtime
+/vendor
+/node_modules
+*.log
