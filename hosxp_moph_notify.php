@@ -91,10 +91,32 @@ $json_payload = [
                     ["type" => "box", "layout" => "vertical", "margin" => "md", "spacing" => "sm", "contents" => $flex_rows]
                 ]
             ],
+            // "footer" => [
+            //     "type" => "box", "layout" => "vertical",
+            //     "contents" => [
+            //         ["type" => "text", "text" => "ระบบแจ้งเตือนอัตโนมัติ HOSxP", "size" => "xxs", "color" => "#aaaaaa", "align" => "center"]
+            //     ]
+            // ]
+
             "footer" => [
-                "type" => "box", "layout" => "vertical",
+                "type" => "box", 
+                "layout" => "vertical", 
+                "spacing" => "sm", // เพิ่มระยะห่างระหว่างปุ่มกับข้อความล่าง
                 "contents" => [
-                    ["type" => "text", "text" => "ระบบแจ้งเตือนอัตโนมัติ HOSxP", "size" => "xxs", "color" => "#aaaaaa", "align" => "center"]
+                    // --- เพิ่มปุ่มกดดู Dashboard ---
+                    [
+                        "type" => "button",
+                        "action" => [
+                            "type" => "uri",
+                            "label" => "HOSxP Buached",
+                            "uri" => "https://erp.buachedhsp.moph.go.th/hos-dashboard"
+                        ],
+                        "style" => "primary", // ปุ่มสีเข้ม
+                        "color" => "#00847b", // สีเดียวกับ Header
+                        "height" => "sm"
+                    ],
+                    // --- ข้อความเดิม ---
+                    ["type" => "text", "text" => "ระบบแจ้งเตือนอัตโนมัติ HOSxP", "size" => "xxs", "color" => "#aaaaaa", "align" => "center", "margin" => "md"]
                 ]
             ]
         ]
