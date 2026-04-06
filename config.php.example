@@ -5,10 +5,15 @@ define('DB_USER', 'sa');
 define('DB_PASS', 'sa');
 define('DB_NAME', 'hos');
 
-// --- MOPH Notify API Key ---
+// --- MOPH Notify API Key กลุ่มที่ 1---
 define('MOPH_URL', 'https://morpromt2f.moph.go.th/api/notify/send');
-define('MOPH_CLIENT_KEY', '239fdf62b6f9xxxxxxx);
-define('MOPH_SECRET_KEY', '2RFPSNYxxxxxxxxx');
+define('MOPH_CLIENT_KEY', '239fdfxxxxxxxxxxxxxxxxxxxxxxxxx');
+define('MOPH_SECRET_KEY', '2RFPSNxxxxxxxxxxxxxxxxxxxxx');
+
+
+// --- MOPH Notify API Key - กลุ่มที่ 2 ---
+define('MOPH_CLIENT_KEY_2', 'yyyyyyyyyyyyyyyyyyyy');
+define('MOPH_SECRET_KEY_2', 'yyyyyyyyyyyyyy');
 
 // --- Timezone Setup ---
 date_default_timezone_set('Asia/Bangkok');

@@ -108,7 +108,7 @@ $json_payload = [
                         "type" => "button",
                         "action" => [
                             "type" => "uri",
-                            "label" => "HOSxP Buached",
+                            "label" => "HOSxP Buached DASH",
                             "uri" => "https://erp.buachedhsp.moph.go.th/hos-dashboard"
                         ],
                         "style" => "primary", // ปุ่มสีเข้ม
@@ -123,7 +123,21 @@ $json_payload = [
     ]]
 ];
 
-// 6. การส่งข้อมูล (CURL)
+// --- 6. เตรียมรายชื่อกลุ่มที่จะส่ง ---
+$targets = [
+    [
+        "name" => "กลุ่มทั่วไป",
+        "client" => MOPH_CLIENT_KEY,
+        "secret" => MOPH_SECRET_KEY
+    ],
+    [
+        "name" => "กลุ่มไอที/หน้างาน",
+        "client" => MOPH_CLIENT_KEY_2,
+        "secret" => MOPH_SECRET_KEY_2
+    ]
+];
+
+// --- 7. วนลูปส่งข้อมูล (CURL) ---
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, MOPH_URL);
 curl_setopt($ch, CURLOPT_POST, true);
