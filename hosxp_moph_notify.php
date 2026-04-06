@@ -56,7 +56,7 @@ foreach ($items as $item) {
         "contents" => [
             ["type" => "text", "text" => $item['icon'] . " " . $item['label'], "size" => "sm", "color" => "#444444", "flex" => 4],
             ["type" => "text", "text" => (string)$item['value'], "size" => "sm", "weight" => "bold", "align" => "end", "color" => $item['color'], "flex" => 2],
-            ["type" => "text", "text" => "คน", "size" => "xs", "color" => "#aaaaaa", "align" => "end", "flex" => 1]
+            ["type" => "text", "text" => "รายการ", "size" => "xs", "color" => "#aaaaaa", "align" => "end", "flex" => 1]
         ]
     ];
 }
@@ -73,7 +73,7 @@ $json_payload = [
                 "contents" => [
                     ["type" => "text", "text" => "Daily Hospital Report", "weight" => "bold", "color" => "#ffffff99", "size" => "xs"],
                     ["type" => "text", "text" => "📊 สถิติผู้รับบริการวันนี้", "weight" => "bold", "color" => "#ffffff", "size" => "xl"],
-                    ["type" => "text", "text" => "วันที่ $thai_date | เวลา $time น.", "color" => "#ffffffcc", "size" => "xs", "margin" => "xs"]
+                    ["type" => "text", "text" => "วันที่ $thai_date | ณ เวลา $time น.", "color" => "#ffffffcc", "size" => "xs", "margin" => "xs"]
                 ]
             ],
             "body" => [
@@ -82,7 +82,7 @@ $json_payload = [
                     [
                         "type" => "box", "layout" => "vertical", "backgroundColor" => "#E8F5E9", "cornerRadius" => "md", "paddingAll" => "lg",
                         "contents" => [
-                            ["type" => "text", "text" => "ยอดรวมผู้รับบริการทั้งหมด (VN)", "size" => "xs", "color" => "#2E7D32", "align" => "center", "weight" => "bold"],
+                            ["type" => "text", "text" => "ยอดรวมผู้รับบริการทั้งหมด", "size" => "xs", "color" => "#2E7D32", "align" => "center", "weight" => "bold"],
                             ["type" => "text", "text" => (string)$report['total'], "size" => "xxl", "weight" => "bold", "align" => "center", "color" => "#1B5E20", "margin" => "xs"],
                             ["type" => "text", "text" => "ราย", "size" => "xs", "color" => "#2E7D32", "align" => "center"]
                         ]
@@ -94,7 +94,7 @@ $json_payload = [
             // "footer" => [
             //     "type" => "box", "layout" => "vertical",
             //     "contents" => [
-            //         ["type" => "text", "text" => "ระบบแจ้งเตือนอัตโนมัติ HOSxP", "size" => "xxs", "color" => "#aaaaaa", "align" => "center"]
+            //         ["type" => "text", "text" => "Buached Hospital IT", "size" => "xxs", "color" => "#aaaaaa", "align" => "center"]
             //     ]
             // ]
 
@@ -126,31 +126,52 @@ $json_payload = [
 // --- 6. เตรียมรายชื่อกลุ่มที่จะส่ง ---
 $targets = [
     [
-        "name" => "กลุ่มทั่วไป",
+        "name" => "IT ทดสอบ",
         "client" => MOPH_CLIENT_KEY,
         "secret" => MOPH_SECRET_KEY
     ],
     [
-        "name" => "กลุ่มไอที/หน้างาน",
+        "name" => "กลุ่มทั่วไป SCAN",
         "client" => MOPH_CLIENT_KEY_2,
         "secret" => MOPH_SECRET_KEY_2
     ]
 ];
 
 // --- 7. วนลูปส่งข้อมูล (CURL) ---
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, MOPH_URL);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($json_payload, JSON_UNESCAPED_UNICODE));
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Content-Type: application/json", 
-    "client-key: " . MOPH_CLIENT_KEY, 
-    "secret-key: " . MOPH_SECRET_KEY
-]);
-$response = curl_exec($ch);
-curl_close($ch);
+    foreach ($targets as $target) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, MOPH_URL); // URL เดียวกัน
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($json_payload, JSON_UNESCAPED_UNICODE));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Content-Type: application/json", 
+            "client-key: " . $target['client'], 
+            "secret-key: " . $target['secret']
+        ]);
+        
+        $response = curl_exec($ch);
+        $http_info = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
 
-echo "MOPH Notify Sent: " . $response;
+        echo "ส่งไปยัง " . $target['name'] . ": สถานะ " . $http_info . " | " . $response . "<br>";
+    }
+
+// --- 7. วนลูปส่งข้อมูล (CURL) --- ส่งกลุ่มเดียว
+// $ch = curl_init();
+// curl_setopt($ch, CURLOPT_URL, MOPH_URL);
+// curl_setopt($ch, CURLOPT_POST, true);
+// curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($json_payload, JSON_UNESCAPED_UNICODE));
+// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+// curl_setopt($ch, CURLOPT_HTTPHEADER, [
+//     "Content-Type: application/json", 
+//     "client-key: " . MOPH_CLIENT_KEY, 
+//     "secret-key: " . MOPH_SECRET_KEY
+// ]);
+// $response = curl_exec($ch);
+// curl_close($ch);
+
+// echo "MOPH Notify Sent: " . $response;
 ?>
